@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ attraction.name }}{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    {% if attraction.image %}
+        <img src="{{ attraction.image.url }}" class="card-img-top detail-cover" alt="{{ attraction.name }}">
+    {% else %}
+        <img src="https://via.placeholder.com/1200x400?text={{ attraction.name|urlencode }}" class="card-img-top detail-cover" alt="{{ attraction.name }}">
+    {% endif %}
+    <div class="card-body">
+        <h1 class="h3">{{ attraction.name }}</h1>
+        <p>{{ attraction.description }}</p>
+        <p class="mb-0"><strong>Область:</strong> <a href="{{ attraction.region.get_absolute_url }}">{{ attraction.region.name }}</a></p>
+    </div>
+</div>
+{% endblock %}

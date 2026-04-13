@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Результат теста{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm text-center">
+    <div class="card-body">
+        <h1 class="h3 mb-3">Результат: {{ quiz.title }}</h1>
+        <p class="display-6 mb-2">{{ score }} / {{ total }}</p>
+        <p class="lead">Процент правильных ответов: <strong>{{ percent }}%</strong></p>
+
+        {% if percent >= 80 %}
+            <p class="text-success">Отличный результат!</p>
+        {% elif percent >= 50 %}
+            <p class="text-warning">Хорошо, но можно лучше.</p>
+        {% else %}
+            <p class="text-danger">Рекомендуем повторить материал и пройти тест снова.</p>
+        {% endif %}
+
+        <a href="{% url 'quiz_list' %}" class="btn btn-success">К списку тестов</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ region.name }}{% endblock %}
+
+{% block content %}
+<section class="region-detail-page">
+<div class="card shadow-sm border-0 mb-4 region-hero">
+    <div class="region-hero__image-wrap">
+        {% if region.image %}
+            <img src="{{ region.image.url }}" class="card-img-top detail-cover region-hero__image" alt="{{ region.name }}">
+        {% else %}
+            <img src="https://via.placeholder.com/1200x400?text={{ region.name|urlencode }}" class="card-img-top detail-cover region-hero__image" alt="{{ region.name }}">
+        {% endif %}
+    </div>
+    <div class="card-body p-4 p-md-5">
+        <h1 class="h3 mb-2">{{ region.name }}</h1>
+        <p class="text-muted mb-4">{{ region.description }}</p>
+
+        <div class="row g-3 region-facts">
+            <div class="col-md-4">
+                <div class="region-fact-item">
+                    <span>Административный центр</span>
+                    <strong>{{ region.administrative_center }}</strong>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="region-fact-item">
+                    <span>Площадь</span>
+                    <strong>{{ region.area }} км²</strong>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="region-fact-item">
+                    <span>Население</span>
+                    <strong>{{ region.population }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-0 region-inner-card">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h5 mb-0">Географические объекты</h2>
+                    <span class="badge rounded-pill text-bg-success-subtle text-success-emphasis">{{ region.geographic_objects.count }}</span>
+                </div>
+                <ul class="mb-0 region-link-list">
+                    {% for obj in region.geographic_objects.all %}
+                        <li>
+                            <a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a>
+                            <span class="text-muted">{{ obj.get_object_type_display }}</span>
+                        </li>
+                    {% empty %}
+                        <li class="text-muted">Нет объектов.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-0 region-inner-card">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h5 mb-0">Достопримечательности</h2>
+                    <span class="badge rounded-pill text-bg-success-subtle text-success-emphasis">{{ region.attractions.count }}</span>
+                </div>
+                <ul class="mb-0 region-link-list">
+                    {% for attraction in region.attractions.all %}
+                        <li><a href="{{ attraction.get_absolute_url }}">{{ attraction.name }}</a></li>
+                    {% empty %}
+                        <li class="text-muted">Нет достопримечательностей.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}

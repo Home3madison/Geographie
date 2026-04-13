@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная | География Кыргызстана{% endblock %}
+
+{% block content %}
+<section class="hero-section p-4 p-md-5 rounded-4 mb-4 text-white">
+    <h1 class="display-6 fw-bold">Географические особенности Кыргызстана</h1>
+    <p class="lead mb-4">Учебный портал для изучения областей, природных объектов, достопримечательностей и проверки знаний через тесты.</p>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="{% url 'region_list' %}" class="btn btn-light">Изучать области</a>
+        <a href="{% url 'object_list' %}" class="btn btn-outline-light">Смотреть объекты</a>
+        <a href="{% url 'quiz_list' %}" class="btn btn-warning">Пройти тест</a>
+    </div>
+</section>
+
+<section class="row g-3 mb-4">
+    <div class="col-6 col-md-3"><div class="card stat-card"><div class="card-body"><h5>{{ stats.regions_count }}</h5><p>Областей</p></div></div></div>
+    <div class="col-6 col-md-3"><div class="card stat-card"><div class="card-body"><h5>{{ stats.objects_count }}</h5><p>Геообъектов</p></div></div></div>
+    <div class="col-6 col-md-3"><div class="card stat-card"><div class="card-body"><h5>{{ stats.attractions_count }}</h5><p>Достопримечательностей</p></div></div></div>
+    <div class="col-6 col-md-3"><div class="card stat-card"><div class="card-body"><h5>{{ stats.quizzes_count }}</h5><p>Тестов</p></div></div></div>
+</section>
+
+<section>
+    <h2 class="h4 mb-3">Популярные области</h2>
+    <div class="row g-3">
+        {% for region in popular_regions %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    {% if region.image %}
+                        <img src="{{ region.image.url }}" class="card-img-top object-cover" alt="{{ region.name }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/600x300?text={{ region.name|urlencode }}" class="card-img-top object-cover" alt="{{ region.name }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ region.name }}</h5>
+                        <p class="small text-muted">Геообъектов: {{ region.obj_count }}</p>
+                        <a href="{{ region.get_absolute_url }}" class="btn btn-sm btn-success">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Пока нет данных. Заполните базу через админку или команду seed_data.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Тесты{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4">Тесты по географии Кыргызстана</h1>
+<div class="row g-3">
+    {% for quiz in quizzes %}
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ quiz.title }}</h5>
+                    <p class="text-muted">{{ quiz.description|default:'Описание отсутствует.' }}</p>
+                    <p class="small mb-3">Количество вопросов: {{ quiz.total_questions }}</p>
+                    <a href="{% url 'quiz_detail' quiz.pk %}" class="btn btn-success">Начать тест</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Тесты пока не добавлены.</p>
+    {% endfor %}
+</div>
+{% endblock %}

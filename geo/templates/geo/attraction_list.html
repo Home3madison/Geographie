@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Достопримечательности{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4">Достопримечательности Кыргызстана</h1>
+<div class="row g-3">
+    {% for attraction in attractions %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                {% if attraction.image %}
+                    <img src="{{ attraction.image.url }}" class="card-img-top object-cover" alt="{{ attraction.name }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/600x300?text={{ attraction.name|urlencode }}" class="card-img-top object-cover" alt="{{ attraction.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ attraction.name }}</h5>
+                    <p class="small text-muted">Область: {{ attraction.region.name }}</p>
+                    <a href="{{ attraction.get_absolute_url }}" class="btn btn-sm btn-success">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Достопримечательности пока не добавлены.</p>
+    {% endfor %}
+</div>
+{% endblock %}

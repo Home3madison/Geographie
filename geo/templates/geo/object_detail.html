@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            {% if object.image %}
+                <img src="{{ object.image.url }}" class="card-img-top detail-cover" alt="{{ object.name }}">
+            {% else %}
+                <img src="https://via.placeholder.com/800x450?text={{ object.name|urlencode }}" class="card-img-top detail-cover" alt="{{ object.name }}">
+            {% endif %}
+            <div class="card-body">
+                <h1 class="h3">{{ object.name }}</h1>
+                <p>{{ object.description }}</p>
+                <p class="mb-1"><strong>Тип:</strong> {{ object.get_object_type_display }}</p>
+                <p class="mb-1"><strong>Область:</strong> <a href="{{ object.region.get_absolute_url }}">{{ object.region.name }}</a></p>
+                <p class="mb-0"><strong>Местоположение:</strong> {{ object.location }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5">Расположение на карте</h2>
+                {% if object.map_link %}
+                    <div class="ratio ratio-4x3">
+                        <iframe src="{{ object.map_link }}" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                {% else %}
+                    <p class="text-muted">Ссылка на карту не добавлена.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

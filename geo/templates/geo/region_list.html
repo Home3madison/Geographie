@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Области Кыргызстана{% endblock %}
+
+{% block content %}
+<section class="region-page">
+<div class="card border-0 shadow-sm region-list-intro mb-4">
+    <div class="card-body p-4 p-md-5">
+        <h1 class="h3 mb-2">Области Кыргызстана</h1>
+        <p class="text-muted mb-0">Исследуйте регионы страны: их административные центры, природные особенности и ключевые объекты.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for region in regions %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 region-card">
+                <div class="region-card__image-wrap">
+                    {% if region.image %}
+                        <img src="{{ region.image.url }}" class="card-img-top object-cover region-card__image" alt="{{ region.name }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/600x300?text={{ region.name|urlencode }}" class="card-img-top object-cover region-card__image" alt="{{ region.name }}">
+                    {% endif %}
+                    <span class="region-card__badge">{{ region.administrative_center }}</span>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title mb-2">{{ region.name }}</h5>
+                    <p class="small text-muted mb-3">{{ region.description|truncatewords:18 }}</p>
+
+                    <div class="region-meta mb-3">
+                        <div><span>Площадь</span><strong>{{ region.area }} км²</strong></div>
+                        <div><span>Население</span><strong>{{ region.population }}</strong></div>
+                    </div>
+
+                    <div class="region-meta mb-4">
+                        <div><span>Геообъекты</span><strong>{{ region.geographic_objects.count }}</strong></div>
+                        <div><span>Места</span><strong>{{ region.attractions.count }}</strong></div>
+                    </div>
+
+                    <a href="{{ region.get_absolute_url }}" class="btn btn-success btn-sm mt-auto">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-muted">Данные об областях пока не добавлены.</p>
+    {% endfor %}
+</div>
+</section>
+{% endblock %}

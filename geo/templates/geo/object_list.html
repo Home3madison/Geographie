@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Географические объекты{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <h1 class="h3 mb-0">Географические объекты</h1>
+    <form method="get" class="d-flex" role="search">
+        <input type="text" class="form-control me-2" name="q" value="{{ query }}" placeholder="Поиск по названию">
+        <button class="btn btn-success" type="submit">Найти</button>
+    </form>
+</div>
+
+<div class="row g-3">
+    {% for obj in objects %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                {% if obj.image %}
+                    <img src="{{ obj.image.url }}" class="card-img-top object-cover" alt="{{ obj.name }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/600x300?text={{ obj.name|urlencode }}" class="card-img-top object-cover" alt="{{ obj.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ obj.name }}</h5>
+                    <p class="small text-muted mb-1">Тип: {{ obj.get_object_type_display }}</p>
+                    <p class="small text-muted">Область: {{ obj.region.name }}</p>
+                    <a href="{{ obj.get_absolute_url }}" class="btn btn-sm btn-success">Открыть карточку</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>По вашему запросу ничего не найдено.</p>
+    {% endfor %}
+</div>
+{% endblock %}
