@@ -1,0 +1,57 @@
+body {
+  background-color: #f8f9fa;
+}
+
+:root {
+  --geo-green: #198754;
+  --geo-green-dark: #0f5132;
+  --geo-muted: #6c757d;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #198754, #0f5132);
+}
+
+.stat-card {
+  border: none;
+  text-align: center;
+}
+
+.stat-card h5 {
+  font-size: 1.8rem;
+  margin-bottom: 0;
+  color: #198754;
+}
+
+.stat-card p {
+  margin: 0;
+  color: #6c757d;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.navbar-geo {
+  background: linear-gradient(90deg, var(--geo-green-dark), var(--geo-green)) !important;
+}
+
+.navbar-geo .nav-link {
+  color: rgba(255, 255, 255, 0.88);
+  border-radius: 0.55rem;
+  padding: 0.4rem 0.7rem;
+  margin: 0 0.1rem;
+  transition: all 0.2s ease;
+}
+
+.navbar-geo .nav-link:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+.navbar-geo .nav-link.active {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
