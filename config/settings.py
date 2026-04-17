@@ -21,6 +21,15 @@ INSTALLED_APPS = [
     'geo.apps.GeoConfig',
 ]
 
+CLOUDINARY_URL = os.getenv('CLOUDINARY_URL', '').strip()
+USE_CLOUDINARY = bool(CLOUDINARY_URL)
+
+if USE_CLOUDINARY:
+    INSTALLED_APPS += [
+        'cloudinary',
+        'cloudinary_storage',
+    ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -91,10 +100,25 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'geo' / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = Path(os.getenv('DJANGO_MEDIA_ROOT', BASE_DIR / 'media'))
+
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
+
+if USE_CLOUDINARY:
+    STORAGES['default'] = {
+        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
+    }
+    CLOUDINARY_STORAGE = {
+        'OVERWRITE': True,
+    }
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'

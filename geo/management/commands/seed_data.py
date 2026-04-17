@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from django.conf import settings
+from django.core.files import File
 from django.core.management.base import BaseCommand
 
 from geo.models import Answer, Attraction, GeographicObject, Question, Quiz, Region
@@ -110,14 +111,38 @@ class Command(BaseCommand):
             'Айгуль-Таш': 'attractions/Айгуль_Таш.jpg',
         }
 
+        use_cloudinary = bool(getattr(settings, 'USE_CLOUDINARY', False))
+        media_root = Path(settings.BASE_DIR) / 'media'
+
+        def assign(model, name, image_path):
+            instance = model.objects.filter(name=name).first()
+            if not instance:
+                return
+
+            if use_cloudinary:
+                image_field = instance.image
+                current_name = image_field.name if image_field else ''
+                # Если в БД уже cloudinary-путь (не seed-путь) — не дублируем загрузку.
+                if current_name and current_name != image_path:
+                    return
+
+                local_file = media_root / image_path
+                if not local_file.exists():
+                    return
+
+                with local_file.open('rb') as fh:
+                    image_field.save(local_file.name, File(fh), save=True)
+            else:
+                model.objects.filter(pk=instance.pk).update(image=image_path)
+
         for name, image_path in region_images.items():
-            Region.objects.filter(name=name).update(image=image_path)
+            assign(Region, name, image_path)
 
         for name, image_path in object_images.items():
-            GeographicObject.objects.filter(name=name).update(image=image_path)
+            assign(GeographicObject, name, image_path)
 
         for name, image_path in attraction_images.items():
-            Attraction.objects.filter(name=name).update(image=image_path)
+            assign(Attraction, name, image_path)
 
     def handle(self, *args, **options):
         self.stdout.write('Создание тестовых данных...')
